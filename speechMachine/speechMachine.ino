@@ -37,24 +37,24 @@ void loop() {
   }
 
     if(state==1){
-        colorWipe();  
+        colorWipe();
     }
     else if(state==2){
-        updateLeds(10, 2, hue++, min(saturation++,255));
+        colorWipe();
     }
     else if(state==3){
-        updateLeds(15, 1000, hue++, min(saturation++,255));
+        updateLeds(10, 10, hue++, min(saturation++,255));
     }
     else if(state==4){
-        updateLeds(22, 500, hue++, min(saturation++,255));
+        updateLeds(30, 100, hue++, min(saturation++,255));
     }
     else if(state==5){
-        updateLeds(30, 333, hue++, max(saturation--,100));  
+        colorWipe();
     }
     else if(state == 6){
         colorWipe();
     }else{
-      updateLeds(10, 100, hue, max(saturation--,1));
+      updateLeds(10, 100, 0, 0);
     }
 
   
@@ -64,11 +64,11 @@ void loop() {
 
 int timeline(unsigned long m){
     int s = 0;
-    if(millis()-m>18000)return 0;
-    else if(millis()-m>15000)return 6;
-    else if(millis()-m>13000)return 5;
-    else if(millis()-m>7000)return 4;
-    else if(millis()-m>5000)return 3;
+    if(millis()-m>13000)return 0;
+    else if(millis()-m>11000)return 6;
+    else if(millis()-m>9000)return 5;
+    else if(millis()-m>5000)return 4;
+    else if(millis()-m>3000)return 3;
     else if(millis()-m>2000)return 2;
     else if(millis()-m>0)return 1;
     return s;

@@ -22,7 +22,8 @@ void loop() {
     bool r = digitalRead(i); 
     if(!r && !buttonState[i-2] && millis()-buttonCounter[i-2]>5000) {
       buttonState[i-2]=true;
-      Serial.write(buttons[i-2]);
+      //Serial.write(buttons[i-2]);
+      Serial.println(buttons[i-2]);
       buttonCounter[i-2]=millis();
     }
     else if(r){

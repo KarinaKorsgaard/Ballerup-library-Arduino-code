@@ -2,8 +2,8 @@
 #include<FastLED.h>
 
 
-const uint8_t kMatrixWidth = 16;
-const uint8_t kMatrixHeight = 16;
+const uint8_t kMatrixWidth = 12;
+const uint8_t kMatrixHeight = 12;
 #define MAX_DIMENSION ((kMatrixWidth>kMatrixHeight) ? kMatrixWidth : kMatrixHeight)
 #define NUM_LEDS (kMatrixWidth * kMatrixHeight)
 const bool    kMatrixSerpentineLayout = true;
@@ -33,6 +33,7 @@ uint16_t XY( uint8_t x, uint8_t y)
 
 // The leds
 CRGB leds[kMatrixWidth * kMatrixHeight];
+CRGB leds2[kMatrixWidth * kMatrixHeight];
 
 static uint16_t x;
 static uint16_t y;
@@ -43,7 +44,8 @@ void setupLeds(int numLeds) {
   
   delay(3000);
   LEDS.addLeds<WS2813,14,RGB>(leds,numLeds);
-  LEDS.setBrightness(96);
+  LEDS.addLeds<WS2813,15,RGB>(leds2,numLeds);
+  LEDS.setBrightness(255);
 
   // Initialize our coordinates to some random values
   x = random16();
@@ -69,6 +71,7 @@ void updateLeds(uint16_t speed, uint16_t scale, int hue, int saturation) {
   for(int i = 0; i < kMatrixWidth; i++) {
     for(int j = 0; j < kMatrixHeight; j++) {
       leds[XY(i,j)] = CHSV(hue,saturation,noise[i][j]);
+      leds2[XY(i,j)] = CHSV(hue,saturation,noise[j][i]);
       // leds[XY(i,j)] = CHSV(hue + (noise[j][i]>>2),saturation,noise[i][j]);
     }
   }
@@ -82,6 +85,7 @@ int theled = 0;
 static uint8_t wipeHue = 0;
 void colorWipe(){
   leds[theled] = CHSV(wipeHue++, 255, 255);
+  leds2[theled] = CHSV(wipeHue++, 255, 255);
   FastLED.show(); 
   fadeall();
   theled++;
@@ -90,11 +94,18 @@ void colorWipe(){
   }
 }
 
-uint8_t blinkValue = 0;
+int blinkValue = 0;
 void blinkled(){
-
+  
+if(blinkValue > 100) {
   for(int i = 0; i < NUM_LEDS; i++) { 
-    leds[i] = CHSV(0, 0, blinkValue); 
+    leds[i] = CRGB::Red;
+    leds2[i] = CRGB::Red;
+  }
+}else{for(int i = 0; i < NUM_LEDS; i++) { 
+    leds[i] = CRGB::Black;
+    leds2[i] = CRGB::Black;
+  }
   }
   blinkValue++;
   if(blinkValue > 255)blinkValue = 0;
