@@ -18,16 +18,18 @@ void setup() {
 }
 char buttons[10] = {'a','b','c','d','e','f','g','h','i','j'};
 void loop() {
-  for(int i = 2; i<12;i++){
+  for(int i = 2; i < 12; i++){
+    // button pins are connected from 2-11
+    int buttonID = i - 2;
     bool r = digitalRead(i); 
-    if(!r && !buttonState[i-2] && millis()-buttonCounter[i-2]>5000) {
-      buttonState[i-2]=true;
-      //Serial.write(buttons[i-2]);
-      Serial.println(buttons[i-2]);
-      buttonCounter[i-2]=millis();
+
+    if(!r && !buttonState[buttonID] && millis() - buttonCounter[buttonID] > 1000) {
+      buttonState[buttonID] = true;
+      Serial.println(buttons[buttonID]);
+      buttonCounter[buttonID] = millis();
     }
     else if(r){
-      buttonState[i-2]=false;
+      buttonState[buttonID] = false;
     }
   }
   bool r = digitalRead(SHUFFLE);
@@ -41,7 +43,7 @@ void loop() {
   }
    
  int m = analogRead(motionPin);
- if(abs(motion-m) > 100){
+ if(abs(motion - m) > 100){
    motion = m; 
    //Serial.println(motion);
    Serial.write('l');
