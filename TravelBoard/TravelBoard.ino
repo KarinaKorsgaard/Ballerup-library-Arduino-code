@@ -20,7 +20,7 @@ char buttons[10] = {'a','b','c','d','e','f','g','h','i','j'};
 void loop() {
   for(int i = 2; i < 12; i++){
     // button pins are connected from 2-11
-    int buttonID = i - 2;
+    int buttonID = 9 - (i - 2);
     bool r = digitalRead(i); 
 
     if(!r && !buttonState[buttonID] && millis() - buttonCounter[buttonID] > 1000) {
